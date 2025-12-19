@@ -1,13 +1,11 @@
--- VELOOA E-COMMERCE SCHEMA (PostgreSQL)
-
 -- 1. USERS
 CREATE TABLE users (
                        id BIGSERIAL PRIMARY KEY,
                        email TEXT UNIQUE NOT NULL,
                        password_hash TEXT NOT NULL,
                        full_name TEXT NOT NULL,
-                       phone_number TEXT,
-                       date_of_birth DATE,
+                       phone_number TEXT NOT NULL ,
+                       birth_date DATE,
                        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -23,7 +21,8 @@ CREATE TABLE addresses (
                            postal_code TEXT NOT NULL,
                            country_code CHAR(2) NOT NULL,
                            is_default BOOLEAN DEFAULT FALSE,
-                           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                           updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- 3. CATEGORIES
@@ -43,7 +42,8 @@ CREATE TABLE products (
                           base_price DECIMAL(10, 2) NOT NULL,
                           image_url TEXT NOT NULL,
                           is_active BOOLEAN DEFAULT TRUE,
-                          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- 5. PRODUCT VARIANTS (Inventory & Specifics)
@@ -65,7 +65,8 @@ CREATE TABLE looks (
                        name TEXT NOT NULL,
                        description TEXT,
                        image_url TEXT NOT NULL,
-                       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+                       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                       updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Junction Table: Look <-> Product

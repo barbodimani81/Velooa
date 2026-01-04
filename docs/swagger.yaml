@@ -1,0 +1,449 @@
+basePath: /api/v1
+definitions:
+  decimal.NullDecimal:
+    properties:
+      decimal:
+        type: number
+      valid:
+        type: boolean
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Address:
+    properties:
+      city:
+        type: string
+      country_code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_default:
+        type: boolean
+      label:
+        type: string
+      line_1:
+        type: string
+      line_2:
+        type: string
+      postal_code:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Cart:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.CartItem'
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.CartItem:
+    properties:
+      cart_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      product_variant_id:
+        type: integer
+      quantity:
+        type: integer
+      variant:
+        $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.ProductVariant'
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Category:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Category'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      parentID:
+        type: integer
+      slug:
+        type: string
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Look:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Product'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Order:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.OrderItem'
+        type: array
+      payment_provider_id:
+        type: string
+      shipping_address:
+        items:
+          type: integer
+        type: array
+      status:
+        type: boolean
+      total_amount:
+        type: number
+      total_discount_saved:
+        type: number
+      userID:
+        type: integer
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.OrderItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      price_at_purchase:
+        type: number
+      product_variant_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.Product:
+    properties:
+      base_price:
+        type: number
+      category:
+        $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Category'
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      updated_at:
+        type: string
+      variants:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.ProductVariant'
+        type: array
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.ProductVariant:
+    properties:
+      color:
+        type: string
+      created_at:
+        type: string
+      discounted_price:
+        $ref: '#/definitions/decimal.NullDecimal'
+      id:
+        type: integer
+      price_override:
+        $ref: '#/definitions/decimal.NullDecimal'
+      product_id:
+        type: integer
+      size:
+        type: string
+      sku:
+        type: string
+      stock_quantity:
+        type: integer
+    type: object
+  github_com_barbodimani81_Velooa_internal_models.User:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Address'
+        type: array
+      birth_date:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      phone_number:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_api_handlers.AddToCartInput:
+    properties:
+      quantity:
+        minimum: 1
+        type: integer
+      variant_id:
+        type: integer
+    required:
+    - quantity
+    - variant_id
+    type: object
+  internal_api_handlers.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_api_handlers.PlaceOrderInput:
+    properties:
+      address_id:
+        type: integer
+      payment_provider_id:
+        type: string
+    required:
+    - address_id
+    - payment_provider_id
+    type: object
+  internal_api_handlers.RegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - phone
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: E-commerce API for Velooa
+  title: Velooa API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates user and returns JWT token
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/internal_api_handlers.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token Response
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login user
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account
+      parameters:
+      - description: User Registration Info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/internal_api_handlers.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - auth
+  /cart:
+    get:
+      description: Retrieves the cart for the logged-in user or guest (via ID)
+      parameters:
+      - description: Guest Cart ID (if not logged in)
+        in: query
+        name: guest_cart_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Cart'
+      summary: Get current cart
+      tags:
+      - cart
+  /cart/items:
+    post:
+      consumes:
+      - application/json
+      description: Adds a product variant to the cart
+      parameters:
+      - description: Guest Cart ID
+        in: query
+        name: guest_cart_id
+        type: integer
+      - description: Item details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/internal_api_handlers.AddToCartInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Cart'
+      summary: Add item to cart
+      tags:
+      - cart
+  /categories:
+    get:
+      description: Get full category tree
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Category'
+            type: array
+      summary: List categories
+      tags:
+      - products
+  /looks/{id}:
+    get:
+      description: Returns a Look and its associated products
+      parameters:
+      - description: Look ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Look'
+      summary: Get a specific Look
+      tags:
+      - looks
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: Converts current cart into a paid order
+      parameters:
+      - description: Order Details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/internal_api_handlers.PlaceOrderInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Order'
+      security:
+      - ApiKeyAuth: []
+      summary: Place an order
+      tags:
+      - orders
+  /products:
+    get:
+      description: Get a paginated list of products, optionally filtered by category
+      parameters:
+      - description: Category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_barbodimani81_Velooa_internal_models.Product'
+            type: array
+      summary: List products
+      tags:
+      - products
+swagger: "2.0"
